@@ -139,9 +139,7 @@ class AudioPlayer {
                 this._toggleIcon(this.buttons.volume, "fa-volume-up", "fa-volume-mute");
 
             },
-            back: () => {this.player.load();
-                         this.player.play();
-                        },
+            back: () => this.player.currentTime = 0,    
             next: () => false,
             add: () => false,
 
