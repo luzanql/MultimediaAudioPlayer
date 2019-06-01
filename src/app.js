@@ -9,7 +9,8 @@ function start(){
         },
         buttons:{
             playPause: document.querySelector(".play"),
-            volume: document.querySelector(".volume")
+            volume: document.querySelector(".volume"),
+            back: document.querySelector(".previous")
         }
     });
 }
