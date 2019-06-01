@@ -169,8 +169,13 @@ class AudioPlayer {
     }
 
     _updateBasigGUIElement(el) {
+    
         if (el.DOMElement instanceof HTMLElement) {
-            el.DOMElement.innerHTML = el.value;
+            let min =  Math.floor( el.value / 60 );
+            let sec  = Math.floor(el.value % 60);
+            min = min < 10 ? '0' + min : min;
+            sec = sec < 10 ? '0' + sec : sec;
+            el.DOMElement.innerHTML = min + ":" + sec;
         }
     }
 

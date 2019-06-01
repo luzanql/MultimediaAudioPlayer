@@ -90,6 +90,7 @@ body{
 
 .currentTime, .totalTime{
     flex:1;
+    color: red;
 }
 
 .progressBar{
@@ -115,3 +116,4 @@ body{
 .btns div i {
     cursor: pointer;
 }
+
