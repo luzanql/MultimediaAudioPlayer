@@ -1,12 +1,13 @@
 class AudioPlayer {
 
     constructor(params) {
-
+      
         this.songs = [];
         this.queue = [];
         this.player = new Audio();
-        let src = "songs/1.mp3";
+      
 
+       
         this._gui = {
             progressBar: { value: null, DOMElement: null },
             artistName: { value: null, DOMElement: null },
@@ -15,11 +16,20 @@ class AudioPlayer {
             totalTime: { value: null, DOMElement: null },
             albumCover: { value: null, DOMElement: null }
         };
-
+  
         if (params.hasOwnProperty("gui")) {
-            var { progressBar, artistName, songName, currentTime, totalTime, albumCover } = params.gui;
+            var { progressBar, artistName, songName, currentTime, totalTime, albumCover } = params.gui; 
             this._initGUI(progressBar, artistName, songName, currentTime, totalTime, albumCover);
         }
+
+        if (params.hasOwnProperty("songs")) {
+            this._songs = params.songs;
+            this._gui.songName["value"] = this._songs[0].name;
+            this._gui.artistName["value"] = this._songs[0].artist;
+            this._gui.albumCover["value"] = this._songs[0].cover;
+        }
+    
+      
 
         this._buttons = {
             queue: null,
@@ -29,13 +39,15 @@ class AudioPlayer {
             next: null,
             add: null
         }
-
-        this._loadSong(src);
+      
+        this._loadSong(this._songs[0].file);
 
         if (params.hasOwnProperty("buttons")) {
             var { queue, volume, back, playPause, next, add } = params.buttons;
             this._initButtons(queue, volume, back, playPause, next, add);
         }
+
+
 
     }
 
@@ -48,7 +60,7 @@ class AudioPlayer {
             }
         }
         this.player.ontimeupdate = () => {
-            //console.log(this.player.currentTime);
+            
             this.gui = {
                 currentTime: { value: this.player.currentTime, DOMElement: this.gui.currentTime.DOMElement }
             }
@@ -60,6 +72,7 @@ class AudioPlayer {
     }
 
     _initGUI(...params) {
+        
         this.gui = {
             progressBar: params[0] || { value: null, DOMElement: null },
             artistName: params[1] || { value: null, DOMElement: null },
@@ -68,6 +81,7 @@ class AudioPlayer {
             totalTime: params[4] || { value: null, DOMElement: null },
             albumCover: params[5] || { value: null, DOMElement: null }
         };
+       
     }
 
     _initButtons(...params) {
@@ -82,7 +96,7 @@ class AudioPlayer {
     }
 
     _addClickEvent(element, callback) {
-        //console.log(element);
+        
         if (element instanceof HTMLElement) {
             element.onclick = callback;
         } else {
@@ -107,6 +121,7 @@ class AudioPlayer {
     }
 
     _assignValues(toAssign, elements, actions = []) {
+       
         const keys = Object.keys(elements);
 
         for (let i = 0; i < keys.length; i++) {
@@ -115,7 +130,6 @@ class AudioPlayer {
                 toAssign[key] = elements[key];
                 if (Object.keys(actions).length > 0) {
                     if (actions.hasOwnProperty(key)) {
-                        console.log(key);
                         this._addClickEvent(toAssign[key], actions[key]);
                     }
                 }
@@ -152,6 +166,7 @@ class AudioPlayer {
     }
 
     set gui(elments) {
+       
         let actions = {
             progressBar: (e) => {
                 let x = e.offsetX;
@@ -166,16 +181,27 @@ class AudioPlayer {
         this._assignValues(this._gui, elments, actions);
         this._updateBasigGUIElement(this.gui.totalTime);
         this._updateBasigGUIElement(this.gui.currentTime);
+        this._updateBasigGUIElement(this.gui.songName);
+        this._updateBasigGUIElement(this.gui.artistName);
+        this._updateBasigGUIElement(this.gui.albumCover);
     }
 
     _updateBasigGUIElement(el) {
-    
+   
         if (el.DOMElement instanceof HTMLElement) {
+            if (el.DOMElement.tagName == "TIME"){
             let min =  Math.floor( el.value / 60 );
             let sec  = Math.floor(el.value % 60);
             min = min < 10 ? '0' + min : min;
             sec = sec < 10 ? '0' + sec : sec;
             el.DOMElement.innerHTML = min + ":" + sec;
+            }else if (el.DOMElement.id == "player"){
+                el.DOMElement.style.backgroundImage="url("+el.value+")";
+            } 
+            else{
+                el.DOMElement.innerHTML = el.value;
+            }
+           
         }
     }
 
