@@ -5,9 +5,9 @@ class AudioPlayer {
         this.songs = [];
         this.queue = [];
         this.player = new Audio();
-      
+        let song = null;
+       // this._song = null;
 
-       
         this._gui = {
             progressBar: { value: null, DOMElement: null },
             artistName: { value: null, DOMElement: null },
@@ -22,14 +22,7 @@ class AudioPlayer {
             this._initGUI(progressBar, artistName, songName, currentTime, totalTime, albumCover);
         }
 
-        if (params.hasOwnProperty("songs")) {
-            this._songs = params.songs;
-            this._gui.songName["value"] = this._songs[0].name;
-            this._gui.artistName["value"] = this._songs[0].artist;
-            this._gui.albumCover["value"] = this._songs[0].cover;
-        }
-    
-      
+       
 
         this._buttons = {
             queue: null,
@@ -39,17 +32,33 @@ class AudioPlayer {
             next: null,
             add: null
         }
-      
-        this._loadSong(this._songs[0].file);
+    
+       // this._loadSong(this.song.file);
 
         if (params.hasOwnProperty("buttons")) {
             var { queue, volume, back, playPause, next, add } = params.buttons;
             this._initButtons(queue, volume, back, playPause, next, add);
         }
 
-
+        if (params.hasOwnProperty("songs")) {
+            this._songs = params.songs;
+            this._setSong(params.songs[0]);
+            this._queue = [...params.songs];
+            this._queue.shift();
+        }
 
     }
+
+    _setSong(songData){
+       
+        this.song  = new Song(songData.name, songData.artist, songData.cover, songData.file);
+        this.gui.songName["value"] = this.song.name;
+        this.gui.artistName["value"] = this.song.artist;
+        this.gui.albumCover["value"] = this.song.cover;
+        this._loadSong(this.song.file);
+        
+    }
+
 
     _loadSong(src) {
         this.player.src = src;
@@ -154,7 +163,12 @@ class AudioPlayer {
 
             },
             back: () => this.player.currentTime = 0,    
-            next: () => false,
+            next: () => {
+                this._setSong(this._queue[0]);
+                this.player.play();
+                this._queue.shift();
+
+            },
             add: () => false,
 
         }

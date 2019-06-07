@@ -5,8 +5,8 @@ function start(){
 
         songs: [
             new Song("Bohemian Rapsody", "Queen", "assets/bohemian.jpg", "songs/3.mp3"),
-            new Song("Destino", "Greycy", "destino.jpg", "1.mp3"),
-            new Song("Lately", "Wet", "conver.jpg", "3.mp3")
+            new Song("Destino", "Greycy", "assets/destino.jpg", "songs/1.mp3"),
+            new Song("We area young", "Fun ft Janelle Monáe", "assets/somenights.jpg", "songs/weareyoung.mp3")
         ] ,
       
         gui:{
@@ -21,7 +21,8 @@ function start(){
         buttons:{
             playPause: document.querySelector(".play"),
             volume: document.querySelector(".volume"),
-            back: document.querySelector(".previous")
+            back: document.querySelector(".previous"),
+            next: document.querySelector(".next")
         }
 
         
