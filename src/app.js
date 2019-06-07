@@ -4,6 +4,7 @@ function start(){
     ap = new AudioPlayer({
 
         songs: [
+            new Song("For the Damaged", "Blonde Redhead", "assets/3.jpg", "songs/3.mp3"),
             new Song("Bohemian Rapsody", "Queen", "assets/bohemian.jpg", "songs/3.mp3"),
             new Song("Destino", "Greycy", "assets/destino.jpg", "songs/1.mp3"),
             new Song("We area young", "Fun ft Janelle Monáe", "assets/somenights.jpg", "songs/weareyoung.mp3")
